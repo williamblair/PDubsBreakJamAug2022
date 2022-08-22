@@ -1,0 +1,8 @@
+*.pdb
+*.ilk
+*.exe
+*.dll
+*.filters
+*.user
+*Debug
+.vs
