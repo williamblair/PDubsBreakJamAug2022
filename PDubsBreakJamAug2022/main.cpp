@@ -25,8 +25,6 @@ int main()
         node->setMaterialTexture(0, gRender.GetDriver()->getTexture("assets/sydney.bmp"));
     }
 
-    //smgr->addCameraSceneNode(0, vector3df(0,30,-40), vector3df(0,5,0));
-
     while (gRender.GetDevice()->run())
     {
         gRender.Clear();

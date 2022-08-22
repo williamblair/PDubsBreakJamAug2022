@@ -47,6 +47,14 @@ void Renderer::Update()
 
 IAnimatedMeshSceneNode* Renderer::LoadAnimMesh(const std::string fileName)
 {
+    std::string fileExt = "";
+    fileExt += fileName[fileName.size()-3];
+    fileExt += fileName[fileName.size()-2];
+    fileExt += fileName[fileName.size()-1];
+    // TODO - handle other mesh types
+    if (fileExt != "md2" && fileExt != "md2") {
+        throw std::runtime_error("Invalid anim mesh file extension\n");
+    }
     IAnimatedMesh* mesh = mSmgr->getMesh(fileName.c_str());
     if (!mesh) {
         throw std::runtime_error("Failed to load mesh: " + fileName);
