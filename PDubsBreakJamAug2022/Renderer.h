@@ -23,12 +23,17 @@ public:
     irr::video::IVideoDriver* GetDriver() const { return mDriver; }
     irr::scene::ISceneManager* GetSceneMgr() const { return mSmgr; }
     irr::gui::IGUIEnvironment* GetGuiEnv() const { return mGuienv; }
+    irr::scene::ICameraSceneNode* GetCam() const { return mCamera; }
 
 private:
     irr::IrrlichtDevice* mDevice;
     irr::video::IVideoDriver* mDriver;
     irr::scene::ISceneManager* mSmgr;
     irr::gui::IGUIEnvironment* mGuienv;
+    irr::scene::ICameraSceneNode* mCamera;
 };
 
-#endif
+// global Renderer instance
+extern Renderer gRender;
+
+#endif // RENDERER_H_INCLUDED
