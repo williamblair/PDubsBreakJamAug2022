@@ -1,0 +1,18 @@
+CC = g++
+CFLAGS = -Wall -O2 -std=c++11
+SOURCES = $(wildcard ./PDubsBreakJamAug2022/*.cpp)
+OBJS = $(SOURCES:.cpp=.o)
+TARGET = main
+INCDIRS = -I./PDubsBreakJamAug2022
+LIBDIRS =
+LIBS = -lIrrlicht -lGL -lXxf86vm -lXext -lX11 -lXcursor
+
+%.o: %.cpp
+	$(CC) $(CFLAGS) -c -o $@ $< $(INCDIRS)
+
+all: $(OBJS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS) $(LIBDIRS) $(LIBS)
+
+clean:
+	rm -f $(OBJS) $(TARGET)
+
