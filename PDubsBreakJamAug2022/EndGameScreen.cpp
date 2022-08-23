@@ -1,33 +1,28 @@
-#include "TitleScreen.h"
-#include "Renderer.h"
+#include "EndGameScreen.h"
 #include "InputManager.h"
-#include <algorithm>
+#include "Renderer.h"
 
 using namespace irr;
 
-TitleScreen::TitleScreen() :
-    mAction(TitleScreen::ACTION_PLAY),
+EndGameScreen::EndGameScreen() :
+    mAction(EndGameScreen::ACTION_TITLE),
     mFont(nullptr),
     mRunning(true),
     mEntry(0)
-{
-}
+{}
+EndGameScreen::~EndGameScreen()
+{}
 
-TitleScreen::~TitleScreen()
-{
-}
-
-void TitleScreen::Init()
+void EndGameScreen::Init()
 {
     mFont = gRender.LoadFont("assets/fontcourier.bmp");
 }
 
-TitleScreen::Action TitleScreen::Run()
+EndGameScreen::Action EndGameScreen::Run()
 {
     mRunning = true;
     while (mRunning && gRender.GetDevice()->run())
     {
-        // logic updates
         HandleInput();
       
         // drawing
@@ -50,7 +45,7 @@ TitleScreen::Action TitleScreen::Run()
     return mAction;
 }
 
-void TitleScreen::HandleInput()
+void EndGameScreen::HandleInput()
 {
     if (gInputMgr.UpPressed()) {
         --mEntry;
