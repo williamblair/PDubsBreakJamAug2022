@@ -10,6 +10,7 @@ public:
     enum Action
     {
         ACTION_PLAY,
+        ACTION_HIGHSCORES,
         ACTION_QUIT
     };
 
@@ -31,9 +32,10 @@ private:
         Action action;
         irr::core::stringw name;
     };
-    static const size_t mNumEntries = 2;
+    static const size_t mNumEntries = 3;
     ActionEntry mActionEntries[mNumEntries] = {
         { ACTION_PLAY, L"Play" },
+        { ACTION_HIGHSCORES, L"High Scores" },
         { ACTION_QUIT, L"Quit" }
     };
     int mEntry;
