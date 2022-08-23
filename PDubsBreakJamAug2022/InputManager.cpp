@@ -27,6 +27,9 @@ bool InputManager::OnEvent(const irr::SEvent& event)
         case irr::KEY_RETURN:
             mConfirmPressed = event.KeyInput.PressedDown;
             break;
+        case irr::KEY_ESCAPE:
+            mQuitGamePressed = event.KeyInput.PressedDown;
+            break;
         default:
             break;
         }

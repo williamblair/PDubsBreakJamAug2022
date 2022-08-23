@@ -4,6 +4,8 @@
 #include "AIPlayer.h"
 #include "GameStatManager.h"
 #include "TitleScreen.h"
+#include "EndGameScreen.h"
+#include "InputManager.h"
 
 using namespace irr;
 
@@ -15,6 +17,8 @@ using namespace gui;
 
 AIPlayer gAiPlyr;
 
+static bool gRunning = true;
+
 static bool RunTitleScreen()
 {
     TitleScreen ts;
@@ -23,6 +27,20 @@ static bool RunTitleScreen()
     switch (act)
     {
     case TitleScreen::ACTION_QUIT:
+        return false;
+    default:
+        break;
+    }
+    return true;
+}
+static bool RunEndGameScreen()
+{
+    EndGameScreen egs;
+    egs.Init();
+    EndGameScreen::Action act = egs.Run();
+    switch (act)
+    {
+    case EndGameScreen::ACTION_QUIT:
         return false;
     default:
         break;
@@ -43,25 +61,43 @@ int main()
 
     gAiPlyr.Init();
     
-    if (!RunTitleScreen()) { return 0; }
-
-    u32 then = gRender.GetDevice()->getTimer()->getTime();
-    while (gRender.GetDevice()->run())
+    while (gRunning)
     {
-        // logic updates
-        u32 now = gRender.GetDevice()->getTimer()->getTime();
-        const float frameDeltaTime = (f32)(now - then) / 1000.0f;
-        then = now;
+        if (!RunTitleScreen()) { break; }
+        // TODO - high scores, then back to title screen
 
-        gAiPlyr.SetNpcPos(gRender.GetCam()->getPosition());
-        gAiPlyr.Update(frameDeltaTime);
+        bool mainGameRunning = true;
+        u32 then = gRender.GetDevice()->getTimer()->getTime();
+        while (mainGameRunning)
+        {
+            // logic updates
+            if (!gRender.GetDevice()->run()) {
+                mainGameRunning = false;
+                gRunning = false;
+            }
+            if (gInputMgr.QuitMainGamePressed()) {
+                mainGameRunning = false;
+            }
+          
+            
+            u32 now = gRender.GetDevice()->getTimer()->getTime();
+            const float frameDeltaTime = (f32)(now - then) / 1000.0f;
+            then = now;
 
-        gGameStatMgr.UpdateGameTime(frameDeltaTime);
+            gAiPlyr.SetNpcPos(gRender.GetCam()->getPosition());
+            gAiPlyr.Update(frameDeltaTime);
+
+            gGameStatMgr.UpdateGameTime(frameDeltaTime);
 
 
-        // drawing
-        gRender.Clear();
-        gRender.Update();
+            // drawing
+            gRender.Clear();
+            gRender.Update();
+        }
+        
+        if (gRunning) {
+            if (!RunEndGameScreen()) { break; }
+        }
     }
 
     gRender.GetDevice()->drop();

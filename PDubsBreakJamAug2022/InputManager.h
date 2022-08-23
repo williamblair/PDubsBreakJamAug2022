@@ -14,11 +14,13 @@ public:
     bool UpPressed() { bool tmp = mUpPressed; if (tmp) mUpPressed = false; return tmp; }
     bool DownPressed() { bool tmp = mDownPressed; if (tmp) mDownPressed = false; return tmp; }
     bool ConfirmPressed() { bool tmp = mConfirmPressed; if (tmp) mConfirmPressed = false; return tmp; }
+    bool QuitMainGamePressed() { bool tmp = mQuitGamePressed; if (tmp) mQuitGamePressed = false; return tmp; }
 
 private:
     bool mUpPressed;
     bool mDownPressed;
     bool mConfirmPressed;
+    bool mQuitGamePressed;
 };
 
 // global input manager instance
