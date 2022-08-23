@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include "InputManager.h"
 #include <stdexcept>
 
 using namespace irr;
@@ -22,7 +23,7 @@ Renderer::~Renderer()
 
 void Renderer::Init()
 {
-    mDevice = createDevice(video::EDT_OPENGL, dimension2d<u32>(640,480), 32, false, false, false, 0);
+    mDevice = createDevice(video::EDT_OPENGL, dimension2d<u32>(640,480), 32, false, false, false, &gInputMgr);
     if (!mDevice) {
         throw std::runtime_error("Failed to create irrlicht device");
     }
@@ -44,10 +45,12 @@ void Renderer::Clear()
     mDriver->beginScene(true, true, SColor(255,100,101,140));
 }
 
-void Renderer::Update()
+void Renderer::Update(bool drawAll)
 {
-    mSmgr->drawAll();
-    mGuienv->drawAll();
+    if (drawAll) {
+        mSmgr->drawAll();
+        mGuienv->drawAll();
+    }
     mDriver->endScene();
 }
 
@@ -63,6 +66,15 @@ IAnimatedMeshSceneNode* Renderer::LoadAnimMesh(const std::string fileName)
         throw std::runtime_error("Failed to create IAnimatedMeshSceneNode for file: " + fileName);
     }
     return node;
+}
+
+IGUIFont* Renderer::LoadFont(const std::string fileName)
+{
+    IGUIFont* font = mGuienv->getFont(fileName.c_str());
+    if (!font) {
+        throw std::runtime_error("Failed to load font: " + fileName);
+    }
+    return font;
 }
 
 // global Renderer instance

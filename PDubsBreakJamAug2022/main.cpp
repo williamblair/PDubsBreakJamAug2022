@@ -3,6 +3,7 @@
 #include "Renderer.h"
 #include "AIPlayer.h"
 #include "GameStatManager.h"
+#include "TitleScreen.h"
 
 using namespace irr;
 
@@ -13,6 +14,21 @@ using namespace io;
 using namespace gui;
 
 AIPlayer gAiPlyr;
+
+static bool RunTitleScreen()
+{
+    TitleScreen ts;
+    ts.Init();
+    TitleScreen::Action act = ts.Run();
+    switch (act)
+    {
+    case TitleScreen::ACTION_QUIT:
+        return false;
+    default:
+        break;
+    }
+    return true;
+}
 
 int main()
 {
@@ -26,9 +42,10 @@ int main()
     }
 
     gAiPlyr.Init();
+    
+    if (!RunTitleScreen()) { return 0; }
 
     u32 then = gRender.GetDevice()->getTimer()->getTime();
-
     while (gRender.GetDevice()->run())
     {
         // logic updates

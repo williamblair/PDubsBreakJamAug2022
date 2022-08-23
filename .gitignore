@@ -6,3 +6,5 @@
 *.user
 *Debug
 .vs
+*.o
+main

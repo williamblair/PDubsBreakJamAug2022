@@ -15,9 +15,11 @@ public:
 
     irr::scene::IAnimatedMeshSceneNode*
         LoadAnimMesh(const std::string fileName);
+    irr::gui::IGUIFont*
+        LoadFont(const std::string fileName);
 
     void Clear();
-    void Update();
+    void Update(bool drawAll = true);
 
     irr::IrrlichtDevice* GetDevice() const { return mDevice; }
     irr::video::IVideoDriver* GetDriver() const { return mDriver; }
