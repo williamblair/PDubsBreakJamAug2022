@@ -1,4 +1,5 @@
 #include "AIPlayer.h"
+#include "GameStatManager.h"
 
 using namespace irr;
 
@@ -85,6 +86,7 @@ void AIPlayer::RunIdle(const float dt)
         // if not close enough, we need to wait for them to get close enough
         if (aiToPlayer.getLengthSQ() > 20000.0f) {
             mState = State::WAIT_FOR_PLAYER;
+            TriggerMakePlayerWait();
         }
         else {
             // otherwise, we can move towards the next waypoint
@@ -108,6 +110,16 @@ void AIPlayer::WaitForPlayer(const float dt)
         // if the player is close enough, we can continue towards the next waypoint
         if (aiToPlayer.getLengthSQ() < 20000.0f) {
             mState = State::WALK_TOWARDS_WAYPOINT;
+        } else {
+            // reset idle waiting time
+            TriggerMakePlayerWait();
+            mIdleCtr = 0.0f;
         }
     }
+}
+
+void AIPlayer::TriggerMakePlayerWait()
+{
+    // TODO - sound effects, player angry animation, GUI popup
+    gGameStatMgr.AddScoreEvent(GameStatManager::EVT_MAKE_PLAYER_WAIT);
 }
