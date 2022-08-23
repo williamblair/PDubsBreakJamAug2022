@@ -37,6 +37,8 @@ private:
     void WalkTowardsWaypoint(const float dt);
     void RunIdle(const float dt);
     void WaitForPlayer(const float dt);
+
+    void TriggerMakePlayerWait();
 };
 
 #endif // AI_PLAYER_H_INCLUDED 

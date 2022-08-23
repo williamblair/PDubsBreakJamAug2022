@@ -2,6 +2,7 @@
 
 #include "Renderer.h"
 #include "AIPlayer.h"
+#include "GameStatManager.h"
 
 using namespace irr;
 
@@ -30,6 +31,7 @@ int main()
 
     while (gRender.GetDevice()->run())
     {
+        // logic updates
         u32 now = gRender.GetDevice()->getTimer()->getTime();
         const float frameDeltaTime = (f32)(now - then) / 1000.0f;
         then = now;
@@ -37,6 +39,10 @@ int main()
         gAiPlyr.SetNpcPos(gRender.GetCam()->getPosition());
         gAiPlyr.Update(frameDeltaTime);
 
+        gGameStatMgr.UpdateGameTime(frameDeltaTime);
+
+
+        // drawing
         gRender.Clear();
         gRender.Update();
     }
