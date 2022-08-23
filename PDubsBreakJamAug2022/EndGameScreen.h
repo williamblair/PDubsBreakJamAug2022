@@ -37,6 +37,7 @@ private:
     int mEntry;
     
     void HandleInput();
+    void DrawStats();
 };
 
 #endif // END_GAME_SCREEN_H_INCLUDED

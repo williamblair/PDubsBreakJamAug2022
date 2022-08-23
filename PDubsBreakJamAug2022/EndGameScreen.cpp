@@ -1,6 +1,7 @@
 #include "EndGameScreen.h"
 #include "InputManager.h"
 #include "Renderer.h"
+#include "GameStatManager.h"
 
 using namespace irr;
 
@@ -40,6 +41,7 @@ EndGameScreen::Action EndGameScreen::Run()
             y += 50;
             y2 = y;
         }
+        DrawStats();
         gRender.Update(false);
     }
     return mAction;
@@ -63,3 +65,30 @@ void EndGameScreen::HandleInput()
         mRunning = false;
     }
 }
+
+void EndGameScreen::DrawStats()
+{
+    int min = gGameStatMgr.GetGameTimeMinutes();
+    int sec = gGameStatMgr.GetGameTimeSeconds();
+    uint64_t mkPlyrWt = gGameStatMgr.GetNumMkPlyrWtEvts();
+    uint64_t score = gGameStatMgr.GetScore();
+    
+    core::stringw scoreStr = L"Score... ";
+    scoreStr += score;
+    core::stringw timeStr = L"Time... ";
+    timeStr += min;
+    timeStr += L":";
+    timeStr += sec;
+    core::stringw plyrWtStr = L"Make Player Wait Events... ";
+    plyrWtStr += mkPlyrWt;
+    
+    s32 x = 130, y = 80, x2 = 400, y2 = y;
+    video::SColor fntCol(255,255,255,0);
+    mFont->draw(scoreStr, core::rect<s32>(x,y,x2,y2), fntCol);
+    y +=20; y2 = y;
+    x += 50; x2 += 50;
+    mFont->draw(timeStr, core::rect<s32>(x,y,x2,y2), fntCol);
+    y +=20; y2 = y;
+    mFont->draw(plyrWtStr, core::rect<s32>(x,y,x2,y2), fntCol);
+}
+
