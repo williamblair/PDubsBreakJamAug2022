@@ -6,6 +6,7 @@
 #include "TitleScreen.h"
 #include "EndGameScreen.h"
 #include "InputManager.h"
+#include "GameMap.h"
 
 using namespace irr;
 
@@ -15,7 +16,8 @@ using namespace video;
 using namespace io;
 using namespace gui;
 
-AIPlayer gAiPlyr;
+//AIPlayer gAiPlyr;
+GameMap gMap;
 
 static bool gRunning = true;
 
@@ -52,15 +54,16 @@ int main()
 {
     gRender.Init();
 
-    auto* node = gRender.LoadAnimMesh("assets/sydney.md2");
-    if (node) {
-        node->setMaterialFlag(EMF_LIGHTING, false);
-        node->setMD2Animation(scene::EMAT_STAND);
-        node->setMaterialTexture(0, gRender.GetDriver()->getTexture("assets/sydney.bmp"));
-    }
+    //auto* node = gRender.LoadAnimMesh("assets/sydney.md2");
+    //if (node) {
+    //    node->setMaterialFlag(EMF_LIGHTING, false);
+    //    node->setMD2Animation(scene::EMAT_STAND);
+    //    node->setMaterialTexture(0, gRender.GetDriver()->getTexture("assets/sydney.bmp"));
+    //}
 
-    gAiPlyr.Init();
-    
+    gAIPlayer.Init();
+    gMap.Init();
+
     while (gRunning)
     {
         if (!RunTitleScreen()) { break; }
@@ -84,8 +87,8 @@ int main()
             const float frameDeltaTime = (f32)(now - then) / 1000.0f;
             then = now;
 
-            gAiPlyr.SetNpcPos(gRender.GetCam()->getPosition());
-            gAiPlyr.Update(frameDeltaTime);
+            gAIPlayer.SetNpcPos(gRender.GetCam()->getPosition());
+            gAIPlayer.Update(frameDeltaTime);
 
             gGameStatMgr.UpdateGameTime(frameDeltaTime);
 

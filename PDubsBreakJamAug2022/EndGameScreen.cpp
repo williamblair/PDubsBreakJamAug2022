@@ -74,13 +74,13 @@ void EndGameScreen::DrawStats()
     uint64_t score = gGameStatMgr.GetScore();
     
     core::stringw scoreStr = L"Score... ";
-    scoreStr += score;
+    scoreStr += (const unsigned long)score;
     core::stringw timeStr = L"Time... ";
     timeStr += min;
     timeStr += L":";
     timeStr += sec;
     core::stringw plyrWtStr = L"Make Player Wait Events... ";
-    plyrWtStr += mkPlyrWt;
+    plyrWtStr += (const unsigned long)mkPlyrWt;
     
     s32 x = 130, y = 80, x2 = 400, y2 = y;
     video::SColor fntCol(255,255,255,0);

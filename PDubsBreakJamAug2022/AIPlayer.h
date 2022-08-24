@@ -41,4 +41,6 @@ private:
     void TriggerMakePlayerWait();
 };
 
+extern AIPlayer gAIPlayer;
+
 #endif // AI_PLAYER_H_INCLUDED 
