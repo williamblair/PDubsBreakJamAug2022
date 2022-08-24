@@ -7,6 +7,7 @@
 #include "EndGameScreen.h"
 #include "InputManager.h"
 #include "GameMap.h"
+#include "GameHud.h"
 
 using namespace irr;
 
@@ -16,8 +17,8 @@ using namespace video;
 using namespace io;
 using namespace gui;
 
-//AIPlayer gAiPlyr;
 GameMap gMap;
+GameHud gHud;
 
 static bool gRunning = true;
 
@@ -63,6 +64,7 @@ int main()
 
     gAIPlayer.Init();
     gMap.Init();
+    gHud.Init();
 
     while (gRunning)
     {
@@ -92,6 +94,7 @@ int main()
 
             gGameStatMgr.UpdateGameTime(frameDeltaTime);
 
+            gHud.Update();
 
             // drawing
             gRender.Clear();

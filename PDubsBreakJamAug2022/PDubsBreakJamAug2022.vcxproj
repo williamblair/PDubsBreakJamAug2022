@@ -151,6 +151,7 @@
   <ItemGroup>
     <ClCompile Include="AIPlayer.cpp" />
     <ClCompile Include="EndGameScreen.cpp" />
+    <ClCompile Include="GameHud.cpp" />
     <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="GameStatManager.cpp" />
     <ClCompile Include="InputManager.cpp" />
@@ -162,6 +163,7 @@
   <ItemGroup>
     <ClInclude Include="AIPlayer.h" />
     <ClInclude Include="EndGameScreen.h" />
+    <ClInclude Include="GameHud.h" />
     <ClInclude Include="GameMap.h" />
     <ClInclude Include="GameStatManager.h" />
     <ClInclude Include="InputManager.h" />
