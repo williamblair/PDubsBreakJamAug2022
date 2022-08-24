@@ -27,10 +27,10 @@ void AIPlayer::Init()
 
     mNpcPos = core::vector3df(0.0f,0.0f,0.0f);
 
-    AddWaypoint(core::vector3df(-100,-66,-80));
+    /*AddWaypoint(core::vector3df(-100,-66,-80));
     AddWaypoint(core::vector3df(100,-66,-80));
     AddWaypoint(core::vector3df(100,-66,80));
-    AddWaypoint(core::vector3df(-100,-66,80));
+    AddWaypoint(core::vector3df(-100,-66,80));*/
 }
 
 void AIPlayer::Update(const float dt)
@@ -123,3 +123,6 @@ void AIPlayer::TriggerMakePlayerWait()
     // TODO - sound effects, player angry animation, GUI popup
     gGameStatMgr.AddScoreEvent(GameStatManager::EVT_MAKE_PLAYER_WAIT);
 }
+
+// global AI instance
+AIPlayer gAIPlayer;

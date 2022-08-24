@@ -151,17 +151,21 @@
   <ItemGroup>
     <ClCompile Include="AIPlayer.cpp" />
     <ClCompile Include="EndGameScreen.cpp" />
+    <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="GameStatManager.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MapFloorTile.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="TitleScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIPlayer.h" />
     <ClInclude Include="EndGameScreen.h" />
+    <ClInclude Include="GameMap.h" />
     <ClInclude Include="GameStatManager.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="MapFloorTile.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="TitleScreen.h" />
   </ItemGroup>
