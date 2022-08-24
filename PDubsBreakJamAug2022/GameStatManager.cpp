@@ -1,5 +1,8 @@
 #include "GameStatManager.h"
+#include "GameHud.h"
 #include <cstdio>
+
+using namespace irr;
 
 GameStatManager::GameStatManager() :
     mScore(0),
@@ -34,14 +37,18 @@ void GameStatManager::UpdateGameTime(const float dt)
 
 void GameStatManager::AddScoreEvent(GameStatManager::ScoreEvent evt)
 {
-    // possibly TODO - GUI popup of event?
-    // or maybe game event manager for listeners, emitters?
+    core::stringw message = "";
     switch (evt)
     {
-    case EVT_MAKE_PLAYER_WAIT: ++mNumMkPlyrWtEvts; mScore += 50; break;
+    case EVT_MAKE_PLAYER_WAIT:
+        ++mNumMkPlyrWtEvts;
+        mScore += 50;
+        message = L"Make Player Wait!";
+        break;
     default:
         break;
     }
+    gHud.AddEventNotification(message);
 }
 
 // Global game stat manager instance
