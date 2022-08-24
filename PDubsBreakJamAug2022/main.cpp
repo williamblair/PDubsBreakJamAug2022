@@ -18,7 +18,6 @@ using namespace io;
 using namespace gui;
 
 GameMap gMap;
-GameHud gHud;
 
 static bool gRunning = true;
 
@@ -94,7 +93,7 @@ int main()
 
             gGameStatMgr.UpdateGameTime(frameDeltaTime);
 
-            gHud.Update();
+            gHud.Update(frameDeltaTime);
 
             // drawing
             gRender.Clear();
