@@ -77,5 +77,14 @@ IGUIFont* Renderer::LoadFont(const std::string fileName)
     return font;
 }
 
+ITexture* Renderer::LoadTexture(const std::string fileName)
+{
+    ITexture* tex = mDriver->getTexture(fileName.c_str());
+    if (!tex) {
+        throw std::runtime_error("Failed to load texture: " + fileName);
+    }
+    return tex;
+}
+
 // global Renderer instance
 Renderer gRender;

@@ -23,6 +23,7 @@ using namespace io;
 using namespace gui;
 
 GameMap gMap;
+bool gGamePaused = false;
 
 static bool gRunning = true;
 
@@ -60,11 +61,11 @@ int main()
     size_t trainSound;
 
     gRender.Init();
-
+    gAudioMgr.Init();
     gAIPlayer.Init();
     gMap.Init();
     gHud.Init();
-    gAudioMgr.Init();
+    
 
     trainSound = gAudioMgr.LoadSound("assets/train.mp3");
 
@@ -74,6 +75,7 @@ int main()
         // TODO - high scores, then back to title screen
 
         bool mainGameRunning = true;
+        bool mainGamePaused = false;
         u32 then = gRender.GetDevice()->getTimer()->getTime();
         while (mainGameRunning)
         {
@@ -90,16 +92,23 @@ int main()
                 gAudioMgr.PlaySound(trainSound, 0);
                 gGameStatMgr.AddScoreEvent(GameStatManager::EVT_TAUNT_PLAYER);
             }
+            if (gMap.BoxCollidesWithExplosion(gRender.GetCameraCollisionBox())) {
+                gHud.AddTriggerExplosion();
+                gRender.SetFPSInputEnabled(false);
+                gGamePaused = true;
+            }
           
             
             u32 now = gRender.GetDevice()->getTimer()->getTime();
             const float frameDeltaTime = (f32)(now - then) / 1000.0f;
             then = now;
 
-            gAIPlayer.SetNpcPos(gRender.GetCam()->getPosition());
-            gAIPlayer.Update(frameDeltaTime);
+            if (!gGamePaused) {
+                gAIPlayer.SetNpcPos(gRender.GetCam()->getPosition());
+                gAIPlayer.Update(frameDeltaTime);
 
-            gGameStatMgr.UpdateGameTime(frameDeltaTime);
+                gGameStatMgr.UpdateGameTime(frameDeltaTime);
+            }
 
             gHud.Update(frameDeltaTime);
 

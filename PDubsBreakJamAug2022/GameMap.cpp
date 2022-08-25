@@ -73,4 +73,39 @@ void GameMap::Init()
         ss >> j;
         gAIPlayer.AddWaypoint(core::vector3df(i*100.0f,0.0f,j*100.0f));
     }
+
+    {
+        int i = 1;
+        int j = 5;
+        float x = i*100.0f;
+        float z = j*100.0f;
+        mExplosionBoxes.push_back(irr::core::aabbox3df(
+            core::vector3df(x-50.0f,0.0f,z-50.0f), // min
+            core::vector3df(x+50.0f,0.0f,z+50.0f) // max
+        ));
+    }
+
+}
+
+bool GameMap::BoxCollidesWithExplosion(core::aabbox3df box)
+{
+    if (mExplosionBoxes.empty()) {
+        return false;
+    }
+    auto exBox = mExplosionBoxes.begin();
+    while (exBox != mExplosionBoxes.end() && !mExplosionBoxes.empty())
+    {
+        if (exBox->intersectsWithBox(box)) {
+            //printf("exBox: %f,%f,%f,  %f,%f,%f\n",
+            //    exBox->MinEdge.X, exBox->MinEdge.Y, exBox->MinEdge.Z,
+            //    exBox->MaxEdge.X, exBox->MaxEdge.Y, exBox->MaxEdge.Z);
+            //printf("box: %f,%f,%f,  %f,%f,%f\n",
+            //    box.MinEdge.X, box.MinEdge.Y, box.MinEdge.Z,
+            //    box.MaxEdge.X, box.MaxEdge.Y, box.MaxEdge.Z);
+            mExplosionBoxes.erase(exBox);
+            return true;
+        }
+        ++exBox;
+    }
+    return false;
 }
