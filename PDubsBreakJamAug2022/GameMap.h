@@ -6,6 +6,7 @@
 #include <irrlicht/irrlicht.h>
 
 #include <vector>
+#include <list>
 
 class GameMap
 {
@@ -18,11 +19,15 @@ public:
     // TODO - is this needed?
     //void Draw();
 
+    bool BoxCollidesWithExplosion(irr::core::aabbox3df box);
+
 private:
     std::vector<std::vector<int>> mMap;
     std::vector<irr::scene::IAnimatedMesh*> mMeshes;
     std::vector<MapFloorTile*> mFloorTiles;
     std::vector<irr::scene::IAnimatedMeshSceneNode*> mTrees;
+    std::list<irr::core::aabbox3df> mExplosionBoxes; // aabb's which trigger an explosion if player collides
+    std::list<irr::scene::IAnimatedMeshSceneNode*> mTntBarrels;
 };
 
 #endif // GAME_MAP_H_INCLUDED

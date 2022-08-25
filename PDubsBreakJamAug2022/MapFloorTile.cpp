@@ -34,6 +34,7 @@ MapFloorTile::MapFloorTile(
         break;
     case 1:
     case 4:
+    case 5:
         mMaterial.setTexture(0, gRender.GetDriver()->getTexture("assets/dirt.jpg"));
         break;
         break;
