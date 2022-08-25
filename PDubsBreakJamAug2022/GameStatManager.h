@@ -20,9 +20,11 @@ public:
 
     uint64_t GetScore() const { return mScore; }
     uint64_t GetNumMkPlyrWtEvts() const { return mNumMkPlyrWtEvts; }
+    uint64_t GetNumTauntPlyrEvts() const { return mNumTauntPlyrEvts; }
     enum ScoreEvent
     {
         EVT_MAKE_PLAYER_WAIT,
+        EVT_TAUNT_PLAYER,
         EVT_NONE
     };
     void AddScoreEvent(ScoreEvent evt);
@@ -37,6 +39,7 @@ private:
     uint64_t mGameTimeDurationScore; // how many points are added when duration is reached
 
     uint64_t mNumMkPlyrWtEvts; // number of 'make player wait' events
+    uint64_t mNumTauntPlyrEvts; // number of 'taunt player' events
 };
 
 // Global game stat manager instance

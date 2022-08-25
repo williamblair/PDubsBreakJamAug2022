@@ -71,6 +71,7 @@ void EndGameScreen::DrawStats()
     int min = gGameStatMgr.GetGameTimeMinutes();
     int sec = gGameStatMgr.GetGameTimeSeconds();
     uint64_t mkPlyrWt = gGameStatMgr.GetNumMkPlyrWtEvts();
+    uint64_t tauntPlyr = gGameStatMgr.GetNumTauntPlyrEvts();
     uint64_t score = gGameStatMgr.GetScore();
     
     core::stringw scoreStr = L"Score... ";
@@ -81,6 +82,8 @@ void EndGameScreen::DrawStats()
     timeStr += sec;
     core::stringw plyrWtStr = L"Make Player Wait Events... ";
     plyrWtStr += (const unsigned long)mkPlyrWt;
+    core::stringw tauntStr = L"Taunt Player Events... ";
+    tauntStr += (const unsigned long)tauntPlyr;
     
     s32 x = 130, y = 80, x2 = 400, y2 = y;
     video::SColor fntCol(255,255,255,0);
@@ -90,5 +93,7 @@ void EndGameScreen::DrawStats()
     mFont->draw(timeStr, core::rect<s32>(x,y,x2,y2), fntCol);
     y +=20; y2 = y;
     mFont->draw(plyrWtStr, core::rect<s32>(x,y,x2,y2), fntCol);
+    y +=20; y2 = y;
+    mFont->draw(tauntStr, core::rect<s32>(x,y,x2,y2), fntCol);
 }
 
