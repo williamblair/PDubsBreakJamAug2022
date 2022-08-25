@@ -9,7 +9,9 @@ GameStatManager::GameStatManager() :
     mGameTime(0.0f),
     mGameTimeScoreDuration(5.0f),
     mGameTimeScoreCtr(0.0f),
-    mGameTimeDurationScore(10)
+    mGameTimeDurationScore(10),
+    mNumMkPlyrWtEvts(0),
+    mNumTauntPlyrEvts(0)
 {}
 
 GameStatManager::~GameStatManager()
@@ -20,6 +22,8 @@ void GameStatManager::Reset()
     mScore = 0;
     mGameTime = 0.0f;
     mGameTimeScoreCtr = 0.0f;
+    mNumMkPlyrWtEvts = 0;
+    mNumTauntPlyrEvts = 0;
 }
 
 void GameStatManager::UpdateGameTime(const float dt)
@@ -45,6 +49,10 @@ void GameStatManager::AddScoreEvent(GameStatManager::ScoreEvent evt)
         mScore += 50;
         message = L"Make Player Wait!";
         break;
+    case EVT_TAUNT_PLAYER:
+        ++mNumTauntPlyrEvts;
+        mScore += 15;
+        message = L"Taunt Player!";
     default:
         break;
     }

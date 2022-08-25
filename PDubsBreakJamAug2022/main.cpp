@@ -6,8 +6,13 @@
 #include "TitleScreen.h"
 #include "EndGameScreen.h"
 #include "InputManager.h"
+#include "AudioManager.h"
 #include "GameMap.h"
 #include "GameHud.h"
+
+#ifdef _WIN32
+#undef main
+#endif
 
 using namespace irr;
 
@@ -52,18 +57,16 @@ static bool RunEndGameScreen()
 
 int main()
 {
-    gRender.Init();
+    size_t trainSound;
 
-    //auto* node = gRender.LoadAnimMesh("assets/sydney.md2");
-    //if (node) {
-    //    node->setMaterialFlag(EMF_LIGHTING, false);
-    //    node->setMD2Animation(scene::EMAT_STAND);
-    //    node->setMaterialTexture(0, gRender.GetDriver()->getTexture("assets/sydney.bmp"));
-    //}
+    gRender.Init();
 
     gAIPlayer.Init();
     gMap.Init();
     gHud.Init();
+    gAudioMgr.Init();
+
+    trainSound = gAudioMgr.LoadSound("assets/train.mp3");
 
     while (gRunning)
     {
@@ -81,6 +84,11 @@ int main()
             }
             if (gInputMgr.QuitMainGamePressed()) {
                 mainGameRunning = false;
+            }
+            if (gInputMgr.ConfirmPressed()) {
+                printf("playing train sound\n");
+                gAudioMgr.PlaySound(trainSound, 0);
+                gGameStatMgr.AddScoreEvent(GameStatManager::EVT_TAUNT_PLAYER);
             }
           
             
