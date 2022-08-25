@@ -52,9 +52,6 @@ void GameMap::Init()
                 (*mTrees.rbegin())->setMaterialFlag(video::EMF_LIGHTING, false);
                 (*mTrees.rbegin())->setScale(core::vector3df(100.0f,100.0f,100.0f));
             }
-            if (mMap[i][j] == 4) {
-                gAIPlayer.AddWaypoint(core::vector3df(i*100.0f,0.0f,j*100.0f));
-            }
             mFloorTiles.emplace_back(
                 new MapFloorTile(
                     gRender.GetSceneMgr()->getRootSceneNode(), gRender.GetSceneMgr(), mMap[i][j]
@@ -62,5 +59,18 @@ void GameMap::Init()
             );
             (*mFloorTiles.rbegin())->setPosition(core::vector3df(i*100.0f,0.0f,j*100.0f));
         }
+    }
+
+    std::ifstream wayptFile("assets/waypoints.txt");
+    if (!wayptFile.is_open()) {
+        throw std::runtime_error("Failed to open waypoints file");
+    }
+    while (std::getline(wayptFile, curLine))
+    {
+        int i, j;
+        std::stringstream ss(curLine);
+        ss >> i;
+        ss >> j;
+        gAIPlayer.AddWaypoint(core::vector3df(i*100.0f,0.0f,j*100.0f));
     }
 }
