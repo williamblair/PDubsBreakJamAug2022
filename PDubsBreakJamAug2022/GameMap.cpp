@@ -21,6 +21,7 @@ GameMap::~GameMap()
 // 1 = path dirt
 // 2 = tree
 // 4 = waypoint
+// 5 - tnt barrel
 
 void GameMap::Init()
 {
@@ -51,6 +52,22 @@ void GameMap::Init()
                 (*mTrees.rbegin())->setPosition(core::vector3df(i*100.0f,170.0f,j*100.0f));
                 (*mTrees.rbegin())->setMaterialFlag(video::EMF_LIGHTING, false);
                 (*mTrees.rbegin())->setScale(core::vector3df(100.0f,100.0f,100.0f));
+            } else if (mMap[i][j] == 5) {
+                mTntBarrels.push_back(gRender.LoadAnimMesh("assets/barrel.obj"));
+                (*mTntBarrels.rbegin())->setPosition(core::vector3df(i*100.0f,00.0f,j*100.0f));
+                (*mTntBarrels.rbegin())->setMaterialFlag(video::EMF_LIGHTING, false);
+                (*mTntBarrels.rbegin())->setScale(core::vector3df(0.5f,0.5f,0.5f));
+                (*mTntBarrels.rbegin())->setRotation(core::vector3df(0.0f,90.0f,0.0f));
+                (*mTntBarrels.rbegin())->setMaterialTexture(0,gRender.LoadTexture("assets/barrel_diff.tga"));
+                {
+                    float x = i*100.0f;
+                    float z = j*100.0f;
+                    core::aabbox3df bndBox(
+                        core::vector3df(x-15.0f,0.0f,z-15.0f), // min
+                        core::vector3df(x+15.0f,15.0f,z+15.0f) // max
+                    );
+                    mExplosionBoxes.push_back(bndBox);
+                }
             }
             mFloorTiles.emplace_back(
                 new MapFloorTile(
@@ -74,17 +91,6 @@ void GameMap::Init()
         gAIPlayer.AddWaypoint(core::vector3df(i*100.0f,0.0f,j*100.0f));
     }
 
-    {
-        int i = 1;
-        int j = 5;
-        float x = i*100.0f;
-        float z = j*100.0f;
-        mExplosionBoxes.push_back(irr::core::aabbox3df(
-            core::vector3df(x-50.0f,0.0f,z-50.0f), // min
-            core::vector3df(x+50.0f,0.0f,z+50.0f) // max
-        ));
-    }
-
 }
 
 bool GameMap::BoxCollidesWithExplosion(core::aabbox3df box)
@@ -93,6 +99,7 @@ bool GameMap::BoxCollidesWithExplosion(core::aabbox3df box)
         return false;
     }
     auto exBox = mExplosionBoxes.begin();
+    auto brlObj = mTntBarrels.begin();
     while (exBox != mExplosionBoxes.end() && !mExplosionBoxes.empty())
     {
         if (exBox->intersectsWithBox(box)) {
@@ -103,9 +110,12 @@ bool GameMap::BoxCollidesWithExplosion(core::aabbox3df box)
             //    box.MinEdge.X, box.MinEdge.Y, box.MinEdge.Z,
             //    box.MaxEdge.X, box.MaxEdge.Y, box.MaxEdge.Z);
             mExplosionBoxes.erase(exBox);
+            (*brlObj)->setVisible(false);
+            mTntBarrels.erase(brlObj);
             return true;
         }
         ++exBox;
+        ++brlObj;
     }
     return false;
 }

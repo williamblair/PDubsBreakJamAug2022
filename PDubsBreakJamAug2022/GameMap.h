@@ -27,6 +27,7 @@ private:
     std::vector<MapFloorTile*> mFloorTiles;
     std::vector<irr::scene::IAnimatedMeshSceneNode*> mTrees;
     std::list<irr::core::aabbox3df> mExplosionBoxes; // aabb's which trigger an explosion if player collides
+    std::list<irr::scene::IAnimatedMeshSceneNode*> mTntBarrels;
 };
 
 #endif // GAME_MAP_H_INCLUDED
