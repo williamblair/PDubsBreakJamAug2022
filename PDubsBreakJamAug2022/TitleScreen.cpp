@@ -28,10 +28,10 @@ void TitleScreen::Init()
     mSelectSound = gAudioMgr.LoadSound("assets/vgmenuselect.wav");
 }
 
-TitleScreen::Action TitleScreen::Run()
+TitleScreen::Action TitleScreen::Run(bool startMusic)
 {
     mRunning = true;
-    gAudioMgr.PlayMusic(mBgMusic);
+    if (startMusic) { gAudioMgr.PlayMusic(mBgMusic); }
     u32 then = gRender.GetDevice()->getTimer()->getTime();
     while (mRunning && gRender.GetDevice()->run())
     {
@@ -69,7 +69,9 @@ TitleScreen::Action TitleScreen::Run()
         mFont->draw(L"BJ Blair - PDubs Break Jam Aug 2022",core::rect<s32>(x,y,x2,y2),fntCol);
         gRender.Update(false);
     }
-    gAudioMgr.StopMusic();
+    if (mAction != Action::ACTION_HIGHSCORES) {
+        gAudioMgr.StopMusic();
+    }
     return mAction;
 }
 

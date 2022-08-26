@@ -37,7 +37,7 @@ private:
     };
     static const size_t mNumEntries = 1;
     ActionEntry mActionEntries[mNumEntries] = {
-        { ACTION_QUIT, L"Quit" }
+        { ACTION_QUIT, L"Continue" }
     };
     int mEntry;
     

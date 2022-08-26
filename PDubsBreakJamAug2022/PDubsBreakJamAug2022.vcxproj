@@ -92,7 +92,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -108,7 +108,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -153,9 +153,11 @@
     <ClCompile Include="AIPlayer.cpp" />
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="EndGameScreen.cpp" />
+    <ClCompile Include="EnterScoreScreen.cpp" />
     <ClCompile Include="GameHud.cpp" />
     <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="GameStatManager.cpp" />
+    <ClCompile Include="HighScoreScreen.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapFloorTile.cpp" />
@@ -167,9 +169,12 @@
     <ClInclude Include="AIPlayer.h" />
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="EndGameScreen.h" />
+    <ClInclude Include="EnterScoreScreen.h" />
     <ClInclude Include="GameHud.h" />
     <ClInclude Include="GameMap.h" />
     <ClInclude Include="GameStatManager.h" />
+    <ClInclude Include="HighScoreData.h" />
+    <ClInclude Include="HighScoreScreen.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="MapFloorTile.h" />
     <ClInclude Include="Renderer.h" />

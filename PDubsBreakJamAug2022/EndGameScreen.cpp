@@ -52,7 +52,7 @@ EndGameScreen::Action EndGameScreen::Run()
         video::SColor fntCol(255,255,255,255);
         mFont->draw(L"End Level!", core::rect<s32>(290,10,450,10), fntCol);
         if (mScoreItemCtr >= 13) {
-            s32 x = 350, y = 500, x2 = 550, y2 = 600;
+            s32 x = 300, y = 500, x2 = 550, y2 = 600;
             video::SColor fntColHilighted(255,255,0,0);
             for (size_t i=0; i<mNumEntries; ++i) {
                 ActionEntry& entry = mActionEntries[i];

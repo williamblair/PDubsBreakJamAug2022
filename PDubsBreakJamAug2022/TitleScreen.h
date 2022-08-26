@@ -19,7 +19,7 @@ public:
     
     void Init();
 
-    Action Run();
+    Action Run(bool startMusic);
     
 private:
     Action mAction;
