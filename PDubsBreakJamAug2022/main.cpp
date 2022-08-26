@@ -24,8 +24,10 @@ using namespace gui;
 
 // global instance
 bool gGamePaused = false;
+bool gMainGameRunning = true;
 
 static bool gRunning = true;
+
 
 static bool RunTitleScreen()
 {
@@ -90,19 +92,18 @@ int main()
         if (!RunTitleScreen()) { break; }
         // TODO - high scores, then back to title screen
 
-        bool mainGameRunning = true;
         bool mainGamePaused = false;
         u32 then = gRender.GetDevice()->getTimer()->getTime();
         gAudioMgr.PlayMusic(bgMusic);
-        while (mainGameRunning)
+        while (gMainGameRunning)
         {
             // logic updates
             if (!gRender.GetDevice()->run()) {
-                mainGameRunning = false;
+                gMainGameRunning = false;
                 gRunning = false;
             }
             if (gInputMgr.QuitMainGamePressed()) {
-                mainGameRunning = false;
+                gMainGameRunning = false;
             }
             if (gInputMgr.ConfirmPressed()) {
                 printf("playing train sound\n");

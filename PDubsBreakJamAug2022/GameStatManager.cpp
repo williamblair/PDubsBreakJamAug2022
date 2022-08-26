@@ -39,7 +39,7 @@ void GameStatManager::UpdateGameTime(const float dt)
             mGameTimeScoreCtr -= mGameTimeScoreDuration;
         }
         mScore += mGameTimeDurationScore;
-        printf("mScore: %llu\n", mScore);
+        //printf("mScore: %llu\n", mScore);
     }
 }
 
