@@ -51,12 +51,13 @@ void GameStatManager::AddScoreEvent(GameStatManager::ScoreEvent evt)
     case EVT_MAKE_PLAYER_WAIT:
         ++mNumMkPlyrWtEvts;
         mScore += 50;
-        message = L"Make Player Wait! +50";
+        message = L"Get Away From Player! +50";
         break;
     case EVT_TAUNT_PLAYER:
         ++mNumTauntPlyrEvts;
         mScore += 15;
         message = L"Taunt Player! +15";
+        break;
     case EVT_TRIGGER_EXPLOSION:
         ++mNumTrgrExplEvts;
         mScore += 100;

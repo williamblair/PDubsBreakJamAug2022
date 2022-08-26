@@ -1,6 +1,7 @@
 #include "TitleScreen.h"
 #include "Renderer.h"
 #include "InputManager.h"
+#include "AudioManager.h"
 #include <algorithm>
 
 using namespace irr;
@@ -20,11 +21,15 @@ TitleScreen::~TitleScreen()
 void TitleScreen::Init()
 {
     mFont = gRender.LoadFont("assets/fontcourier.bmp");
+    mBgMusic = gAudioMgr.LoadMusic("assets/title.mp3");
+    mHilightSound = gAudioMgr.LoadSound("assets/vgmenuhighlight.wav");
+    mSelectSound = gAudioMgr.LoadSound("assets/vgmenuselect.wav");
 }
 
 TitleScreen::Action TitleScreen::Run()
 {
     mRunning = true;
+    gAudioMgr.PlayMusic(mBgMusic);
     while (mRunning && gRender.GetDevice()->run())
     {
         // logic updates
@@ -47,6 +52,7 @@ TitleScreen::Action TitleScreen::Run()
         }
         gRender.Update(false);
     }
+    gAudioMgr.StopMusic();
     return mAction;
 }
 
@@ -58,13 +64,16 @@ void TitleScreen::HandleInput()
             mEntry = mNumEntries-1;
         }
         mAction = mActionEntries[mEntry].action;
+        gAudioMgr.PlaySound(mHilightSound);
     } else if (gInputMgr.DownPressed()) {
         ++mEntry;
         if ((size_t)mEntry >= mNumEntries) {
             mEntry = 0;
         }
         mAction = mActionEntries[mEntry].action;
+        gAudioMgr.PlaySound(mHilightSound);
     } else if (gInputMgr.ConfirmPressed()) {
         mRunning = false;
+        gAudioMgr.PlaySound(mSelectSound);
     }
 }

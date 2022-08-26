@@ -19,9 +19,12 @@ public:
     size_t LoadSound(std::string fileName);
 
     void PlayMusic(size_t mus, bool loop = true);
+    void PauseMusic();
+    void ResumeMusic();
     void StopMusic();
 
-    void PlaySound(size_t sound, int channel = -1);
+    void PlaySound(size_t sound, int channel = -1, bool loop = false);
+    void StopSound(int channel);
 
 private:
     bool mInitted;
