@@ -1,6 +1,7 @@
 #include "AIPlayer.h"
 #include "GameStatManager.h"
 #include "GameMap.h"
+#include "AudioManager.h"
 
 using namespace irr;
 
@@ -30,6 +31,9 @@ void AIPlayer::Init()
     mNode->setMaterialFlag(video::EMF_LIGHTING, false);
 
     mNpcPos = core::vector3df(0.0f,0.0f,0.0f);
+
+    mHitSound = gAudioMgr.LoadSound("assets/punchhitkick.mp3");
+    mGruntSound = gAudioMgr.LoadSound("assets/uhoh.mp3");
 }
 
 void AIPlayer::Update(const float dt)
@@ -88,6 +92,7 @@ void AIPlayer::RunIdle(const float dt)
         if (aiToPlayer.getLengthSQ() > 20000.0f) {
             mState = State::WAIT_FOR_PLAYER;
             TriggerMakePlayerWait();
+            gAudioMgr.PlaySound(mGruntSound);
         }
         else {
             // otherwise, we can move towards the next waypoint
@@ -114,6 +119,7 @@ void AIPlayer::WaitForPlayer(const float dt)
         } else {
             // reset idle waiting time
             TriggerMakePlayerWait();
+            gAudioMgr.PlaySound(mGruntSound);
             mIdleCtr = 0.0f;
         }
     }
@@ -140,6 +146,7 @@ void AIPlayer::WalkTowardsEnemy(const float dt)
         //mWaypoints.erase(mWaypoints.begin());
         mState = State::ATTACK_ENEMY;
         mNode->setFrameLoop(31,43); // specific to ninja model
+        gAudioMgr.PlaySound(mHitSound,1,true);
         return;
     }
     
@@ -158,6 +165,7 @@ void AIPlayer::AttackEnemy(const float dt)
         mEnemy = gMap.GetNextEnemy();
         if (mEnemy == nullptr) {
             mState = State::WAIT_FOR_PLAYER;
+            gAudioMgr.StopSound(1);
             return;
         }
          mNode->setFrameLoop(31,43); // specific to ninja model
@@ -175,6 +183,7 @@ void AIPlayer::AttackEnemy(const float dt)
     if (aiToPoint.getLengthSQ() >= 6000.0f) {
         mState = State::WALK_TOWARD_ENEMY;
         mNode->setFrameLoop(0,13); // specific to ninja model
+        gAudioMgr.StopSound(1);
         return;
     }
 
@@ -184,12 +193,12 @@ void AIPlayer::AttackEnemy(const float dt)
         mEnemy = nullptr;
         mState = State::ATTACK_ENEMY;
         mNode->setFrameLoop(0,13);
+        gAudioMgr.PlaySound(mHitSound,1,true);
     }
 }
 
 void AIPlayer::TriggerMakePlayerWait()
 {
-    // TODO - sound effects, player angry animation, GUI popup
     gGameStatMgr.AddScoreEvent(GameStatManager::EVT_MAKE_PLAYER_WAIT);
 }
 

@@ -24,6 +24,9 @@ public:
 private:
     Action mAction;
     irr::gui::IGUIFont* mFont;
+    size_t mBgMusic;
+    size_t mHilightSound;
+    size_t mSelectSound;
     
     bool mRunning;
 

@@ -125,6 +125,7 @@ void GameHud::Update(const float dt)
             //AddEventNotification(L"Trigger Explosion!");
             gGamePaused = false;
             gRender.SetFPSInputEnabled(true);
+            gAudioMgr.ResumeMusic();
         }
     }/* else if (mPlayingAlert) {
         if (mEventTimeCtr >= mAlertTime) {
@@ -154,6 +155,7 @@ void GameHud::AddEventNotification(core::stringw message)
 
 void GameHud::AddTriggerExplosion()
 {
+    gAudioMgr.PauseMusic();
     gAudioMgr.PlaySound(mRightBackSound);
     mEventTimeCtr = 0.0f;
     mPlayingExplosion = true;

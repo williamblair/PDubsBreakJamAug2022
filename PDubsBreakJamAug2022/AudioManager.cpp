@@ -69,17 +69,31 @@ void AudioManager::PlayMusic(size_t mus, bool loop)
     }
 }
 
+void AudioManager::PauseMusic()
+{
+    Mix_PauseMusic();
+}
+void AudioManager::ResumeMusic()
+{
+    Mix_ResumeMusic();
+}
+
 void AudioManager::StopMusic()
 {
     Mix_HaltMusic();
 }
 
-void AudioManager::PlaySound(size_t sound, int channel)
+void AudioManager::PlaySound(size_t sound, int channel, bool loop)
 {
-    int loopVal = 0; // no looping
+    int loopVal = loop ? -1 : 0;
     if (Mix_PlayChannel(channel, mSounds[sound], loopVal) < 0) {
         throw std::runtime_error("Failed to play sound: " + std::string(Mix_GetError()));
     }
+}
+
+void AudioManager::StopSound(int channel)
+{
+    Mix_HaltChannel(channel);
 }
 
 // global instance

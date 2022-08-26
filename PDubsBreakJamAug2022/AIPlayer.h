@@ -35,6 +35,8 @@ private:
     AIEnemy* mEnemy;
     irr::core::vector3df mNpcPos;
     std::list<irr::core::vector3df> mWaypoints;
+    size_t mHitSound;
+    size_t mGruntSound;
 
     float mIdleTime;
     float mIdleCtr;

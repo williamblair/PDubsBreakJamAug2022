@@ -60,6 +60,7 @@ int main()
 {
     size_t trainSound;
     size_t alertSound;
+    size_t bgMusic;
     IBillboardSceneNode* alertBill;
     float alertTime = 1.5f;
     float alertTimeCtr = 0.0f;
@@ -74,6 +75,7 @@ int main()
 
     trainSound = gAudioMgr.LoadSound("assets/train.mp3");
     alertSound = gAudioMgr.LoadSound("assets/alert.mp3");
+    bgMusic = gAudioMgr.LoadMusic("assets/overworld.mp3");
 
     alertBill = gRender.GetSceneMgr()->addBillboardSceneNode();
     alertBill->setMaterialType(video::EMT_TRANSPARENT_ALPHA_CHANNEL);
@@ -91,7 +93,7 @@ int main()
         bool mainGameRunning = true;
         bool mainGamePaused = false;
         u32 then = gRender.GetDevice()->getTimer()->getTime();
-        //gAIPlayer.SetState(AIPlayer::State::WALK_TOWARD_ENEMY); // TEST
+        gAudioMgr.PlayMusic(bgMusic);
         while (mainGameRunning)
         {
             // logic updates
@@ -156,6 +158,7 @@ int main()
             gRender.Clear();
             gRender.Update();
         }
+        gAudioMgr.StopMusic();
         
         if (gRunning) {
             if (!RunEndGameScreen()) { break; }
