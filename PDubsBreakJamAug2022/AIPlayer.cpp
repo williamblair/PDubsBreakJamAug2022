@@ -5,6 +5,9 @@
 
 using namespace irr;
 
+// defined in main.cpp
+extern bool gMainGameRunning;
+
 AIPlayer::AIPlayer() :
     mNode(nullptr),
     mState(State::WALK_TOWARDS_WAYPOINT),
@@ -99,6 +102,9 @@ void AIPlayer::RunIdle(const float dt)
         else {
             // otherwise, we can move towards the next waypoint
             mState = State::WALK_TOWARDS_WAYPOINT;
+            if (mWaypoints.empty()) {
+                gMainGameRunning = false;
+            }
         }
     }
 }
