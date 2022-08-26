@@ -1,4 +1,6 @@
 #include <cstdio>
+#include <vector>
+#include <stdexcept>
 
 #include "Renderer.h"
 #include "AIPlayer.h"
@@ -9,6 +11,9 @@
 #include "AudioManager.h"
 #include "GameMap.h"
 #include "GameHud.h"
+#include "HighScoreData.h"
+#include "HighScoreScreen.h"
+#include "EnterScoreScreen.h"
 
 #ifdef _WIN32
 #undef main
@@ -25,23 +30,17 @@ using namespace gui;
 // global instance
 bool gGamePaused = false;
 bool gMainGameRunning = true;
+std::vector<HighScoreData> gHighScoreData;
 
 static bool gRunning = true;
 
 
-static bool RunTitleScreen()
+static TitleScreen::Action RunTitleScreen(bool startMusic)
 {
     TitleScreen ts;
     ts.Init();
-    TitleScreen::Action act = ts.Run();
-    switch (act)
-    {
-    case TitleScreen::ACTION_QUIT:
-        return false;
-    default:
-        break;
-    }
-    return true;
+    TitleScreen::Action act = ts.Run(startMusic);
+    return act;
 }
 static bool RunEndGameScreen()
 {
@@ -56,6 +55,30 @@ static bool RunEndGameScreen()
         break;
     }
     return true;
+}
+static HighScoreScreen::Action RunHighScoreScreen()
+{
+    HighScoreScreen hss;
+    FILE* datFile = fopen("assets/highscores.dat", "rb");
+    if (datFile) {
+        // get file size
+        fseek(datFile, 0, SEEK_END);
+        size_t fileSizeBytes = ftell(datFile);
+        fseek(datFile, 0, SEEK_SET);
+
+        // calculate number of data entries
+        size_t numHsDatas = fileSizeBytes / sizeof(HighScoreData);
+        gHighScoreData.resize(numHsDatas);
+
+        // read the file data
+        size_t amntRead = fread(gHighScoreData.data(), sizeof(HighScoreData), numHsDatas, datFile);
+        if (amntRead != numHsDatas) {
+            throw std::runtime_error("Failed to read high score data\n");
+        }
+        fclose(datFile);
+    }
+    hss.Init();
+    return hss.Run();
 }
 
 int main()
@@ -87,10 +110,25 @@ int main()
     alertBill->setSize(core::dimension2d<f32>(20.0f,20.0f));
     alertBill->setVisible(false);
 
+    bool titleStartMusic = true;
     while (gRunning)
     {
-        if (!RunTitleScreen()) { break; }
-        // TODO - high scores, then back to title screen
+        switch (RunTitleScreen(titleStartMusic))
+        {
+        case TitleScreen::Action::ACTION_HIGHSCORES:
+            if (RunHighScoreScreen() == HighScoreScreen::Action::QUIT) {
+                gRunning = false;
+                gMainGameRunning = false;
+            }
+            titleStartMusic = false;
+            continue;
+        case TitleScreen::Action::ACTION_QUIT:
+            gRunning = false;
+            gMainGameRunning = false;
+            break;
+        default:
+            break;
+        }
 
         bool mainGamePaused = false;
         u32 then = gRender.GetDevice()->getTimer()->getTime();
@@ -106,7 +144,6 @@ int main()
                 gMainGameRunning = false;
             }
             if (gInputMgr.ConfirmPressed()) {
-                printf("playing train sound\n");
                 gAudioMgr.PlaySound(trainSound, 0);
                 gGameStatMgr.AddScoreEvent(GameStatManager::EVT_TAUNT_PLAYER);
             }
@@ -163,8 +200,32 @@ int main()
         //gAudioMgr.StopMusic();
         
         if (gRunning) {
-            if (!RunEndGameScreen()) { break; }
+            bool shouldQuit = RunEndGameScreen();
+            if (!gRunning) { break; }
+            if (gHighScoreData.empty() || (gGameStatMgr.GetScore() > gHighScoreData.rbegin()->score)) {
+                EnterScoreScreen ess;
+                ess.Init(gGameStatMgr.GetScore());
+                EnterScoreScreen::Action act = ess.Run();
+                switch (act)
+                {
+                case EnterScoreScreen::ACTION_HIGHSCORES:
+                    shouldQuit = false;
+                    break;
+                case EnterScoreScreen::ACTION_QUIT:
+                    shouldQuit = true;
+                    break;
+                default:
+                    break;
+                }
+            }
+            if (shouldQuit || !gRunning) { break; }
+            if (RunHighScoreScreen() == HighScoreScreen::Action::QUIT) {
+                gRunning = false;
+                gMainGameRunning = false;
+                break;
+            }
         }
+        titleStartMusic = true;
     }
 
     gRender.GetDevice()->drop();
