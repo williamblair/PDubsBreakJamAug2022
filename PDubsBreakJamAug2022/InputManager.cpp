@@ -25,6 +25,7 @@ bool InputManager::OnEvent(const irr::SEvent& event)
             mDownPressed = event.KeyInput.PressedDown;
             break;
         case irr::KEY_RETURN:
+        case irr::KEY_SPACE:
             mConfirmPressed = event.KeyInput.PressedDown;
             break;
         case irr::KEY_ESCAPE:
