@@ -158,7 +158,8 @@ int main()
             gRender.Clear();
             gRender.Update();
         }
-        gAudioMgr.StopMusic();
+        // keep playing for end game screen
+        //gAudioMgr.StopMusic();
         
         if (gRunning) {
             if (!RunEndGameScreen()) { break; }

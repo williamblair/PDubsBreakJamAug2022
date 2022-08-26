@@ -1,7 +1,10 @@
 #ifndef END_GAME_SCREEN_H_INCLUDED
 #define END_GAME_SCREEN_H_INCLUDED
 
+#include <vector>
+
 #include <irrlicht/irrlicht.h>
+
 
 class EndGameScreen
 {
@@ -23,15 +26,17 @@ private:
     Action mAction;
     irr::gui::IGUIFont* mFont;
     bool mRunning;
+    float mTimeCtr;
+    int mScoreItemCtr;
+    size_t mItemSound;
     
     struct ActionEntry
     {
         Action action;
         irr::core::stringw name;
     };
-    static const size_t mNumEntries = 2;
+    static const size_t mNumEntries = 1;
     ActionEntry mActionEntries[mNumEntries] = {
-        { ACTION_TITLE, L"Title Screen" },
         { ACTION_QUIT, L"Quit" }
     };
     int mEntry;
