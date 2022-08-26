@@ -9,6 +9,7 @@ using namespace irr;
 TitleScreen::TitleScreen() :
     mAction(TitleScreen::ACTION_PLAY),
     mFont(nullptr),
+    mNamePos(650.0f),
     mRunning(true),
     mEntry(0)
 {
@@ -20,7 +21,8 @@ TitleScreen::~TitleScreen()
 
 void TitleScreen::Init()
 {
-    mFont = gRender.LoadFont("assets/fontcourier.bmp");
+    //mFont = gRender.LoadFont("assets/fontcourier.bmp");
+    mFont = gRender.LoadFont("assets/bigfont.png");
     mBgMusic = gAudioMgr.LoadMusic("assets/title.mp3");
     mHilightSound = gAudioMgr.LoadSound("assets/vgmenuhighlight.wav");
     mSelectSound = gAudioMgr.LoadSound("assets/vgmenuselect.wav");
@@ -30,16 +32,28 @@ TitleScreen::Action TitleScreen::Run()
 {
     mRunning = true;
     gAudioMgr.PlayMusic(mBgMusic);
+    u32 then = gRender.GetDevice()->getTimer()->getTime();
     while (mRunning && gRender.GetDevice()->run())
     {
         // logic updates
         HandleInput();
+
+        u32 now = gRender.GetDevice()->getTimer()->getTime();
+        const float dt = (f32)(now - then) / 1000.0f;
+        then = now;
+
+        mNamePos -= dt * 50.0f;
+        if (mNamePos < -600.0f) {
+            mNamePos = 810.0f;
+        }
       
         // drawing
         gRender.Clear();
-        s32 x = 130, y = 10, x2 = 400, y2 = y;
         video::SColor fntCol(255,255,255,255);
         video::SColor fntColHilighted(255,255,0,0);
+        s32 x = 200, y = 10, x2 = 600, y2 = y;
+        mFont->draw(L"NPC Escort Simulator", core::rect<s32>(x,y,x2,y2),fntCol);
+        x = 300, y = 200, x2 = 600, y2 = y;
         for (size_t i=0; i<mNumEntries; ++i) {
             ActionEntry& entry = mActionEntries[i];
             mFont->draw(
@@ -50,6 +64,9 @@ TitleScreen::Action TitleScreen::Run()
             y += 50;
             y2 = y;
         }
+        x = (s32)mNamePos; x2 = x + 300;
+        y = 500; y2 = 500;
+        mFont->draw(L"BJ Blair - PDubs Break Jam Aug 2022",core::rect<s32>(x,y,x2,y2),fntCol);
         gRender.Update(false);
     }
     gAudioMgr.StopMusic();

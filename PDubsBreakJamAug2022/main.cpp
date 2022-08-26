@@ -68,8 +68,8 @@ int main()
 
     gRender.Init();
     gAudioMgr.Init();
-    gAIPlayer.Init();
     gMap.Init();
+    gAIPlayer.Init();
     gHud.Init();
     
 

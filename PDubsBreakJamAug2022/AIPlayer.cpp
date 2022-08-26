@@ -22,13 +22,15 @@ void AIPlayer::Init()
 {
     mNode = gRender.LoadAnimMesh("assets/ninja.b3d");
     mNode->setScale(core::vector3df(10));
-    mNode->setPosition(core::vector3df(-75,-66,-80));
     mNode->setRotation(core::vector3df(0,90,0));
     mNode->setAnimationSpeed(8.0f);
     mNode->setFrameLoop(0,13); // walk animation
     //mNode->getMaterial(0).NormalizeNormals = true;
     //mNode->getMaterial(0).Lighting = true;
     mNode->setMaterialFlag(video::EMF_LIGHTING, false);
+    if (mWaypoints.size() > 0) {
+        mNode->setPosition(*mWaypoints.begin());
+    }
 
     mNpcPos = core::vector3df(0.0f,0.0f,0.0f);
 
