@@ -22,7 +22,7 @@ using namespace video;
 using namespace io;
 using namespace gui;
 
-GameMap gMap;
+// global instance
 bool gGamePaused = false;
 
 static bool gRunning = true;
@@ -59,6 +59,11 @@ static bool RunEndGameScreen()
 int main()
 {
     size_t trainSound;
+    size_t alertSound;
+    IBillboardSceneNode* alertBill;
+    float alertTime = 1.5f;
+    float alertTimeCtr = 0.0f;
+    bool playingAlert = false;
 
     gRender.Init();
     gAudioMgr.Init();
@@ -68,6 +73,15 @@ int main()
     
 
     trainSound = gAudioMgr.LoadSound("assets/train.mp3");
+    alertSound = gAudioMgr.LoadSound("assets/alert.mp3");
+
+    alertBill = gRender.GetSceneMgr()->addBillboardSceneNode();
+    alertBill->setMaterialType(video::EMT_TRANSPARENT_ALPHA_CHANNEL);
+    alertBill->setMaterialTexture(0, gRender.LoadTexture("assets/alert.png"));
+    alertBill->setMaterialFlag(video::EMF_LIGHTING, false);
+    alertBill->setMaterialFlag(video::EMF_ZBUFFER, false);
+    alertBill->setSize(core::dimension2d<f32>(20.0f,20.0f));
+    alertBill->setVisible(false);
 
     while (gRunning)
     {
@@ -77,6 +91,7 @@ int main()
         bool mainGameRunning = true;
         bool mainGamePaused = false;
         u32 then = gRender.GetDevice()->getTimer()->getTime();
+        //gAIPlayer.SetState(AIPlayer::State::WALK_TOWARD_ENEMY); // TEST
         while (mainGameRunning)
         {
             // logic updates
@@ -96,6 +111,21 @@ int main()
                 gHud.AddTriggerExplosion();
                 gRender.SetFPSInputEnabled(false);
                 gGamePaused = true;
+                gGameStatMgr.AddScoreEvent(GameStatManager::EVT_TRIGGER_EXPLOSION);
+            }
+            if (gMap.BoxCollidesWithEnemyPatrol(gRender.GetCameraCollisionBox())) {
+                gAIPlayer.SetState(AIPlayer::State::WALK_TOWARD_ENEMY);
+                gMap.GetNextEnemy()->SetState(AIEnemy::State::WALK_TOWARD_PLAYER);
+                gGameStatMgr.AddScoreEvent(GameStatManager::EVT_SEEN_BY_ENEMY);
+                gAudioMgr.PlaySound(alertSound);
+                playingAlert = true;
+                alertTimeCtr = 0.0f;
+                alertBill->setVisible(true);
+            }
+            if (gMap.GetNextEnemy() && playingAlert) {
+                core::vector3df pos = gMap.GetNextEnemy()->GetNode()->getAbsolutePosition();
+                pos.Y += 60.0f;
+                alertBill->setPosition(pos);
             }
           
             
@@ -103,11 +133,21 @@ int main()
             const float frameDeltaTime = (f32)(now - then) / 1000.0f;
             then = now;
 
+            if (playingAlert) {
+                alertTimeCtr += frameDeltaTime;
+                if (alertTimeCtr >= alertTime) {
+                    alertTimeCtr = 0.0f;
+                    playingAlert = false;
+                    alertBill->setVisible(false);
+                }
+            }
+
             if (!gGamePaused) {
                 gAIPlayer.SetNpcPos(gRender.GetCam()->getPosition());
                 gAIPlayer.Update(frameDeltaTime);
 
                 gGameStatMgr.UpdateGameTime(frameDeltaTime);
+                gMap.Update(frameDeltaTime);
             }
 
             gHud.Update(frameDeltaTime);

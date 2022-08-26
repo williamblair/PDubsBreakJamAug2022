@@ -78,6 +78,20 @@ void GameHud::Init()
     mExplosionImg->setImage(mExplosionTex);
     mExplosionImg->setScaleImage(true);
     mExplosionImg->setColor(video::SColor(0,255,255,255)); // fully transparent
+
+    /*mPlayingAlert = false;
+    mAlertTime = 2.0f;
+    mAlertTex = gRender.LoadTexture("assets/alert.png");
+    mAlertImg = gRender.GetGuiEnv()->addImage(
+        core::rect<s32>(320-50,240-50,320+100,240+100),
+        nullptr,
+        -1,
+        nullptr,
+        true
+    );
+    mAlertImg->setImage(mAlertTex);
+    mAlertImg->setColor(video::SColor(0,255,255,255));
+    mAlertImg->setScaleImage(true);*/
 }
 
 void GameHud::Update(const float dt)
@@ -108,12 +122,18 @@ void GameHud::Update(const float dt)
             mExplosionImg->setColor(video::SColor(0,255,255,255));
             mEventTimeCtr = 0.0f;
             mPlayingExplosion = false;
-            AddEventNotification(L"Trigger Explosion!");
+            //AddEventNotification(L"Trigger Explosion!");
             gGamePaused = false;
             gRender.SetFPSInputEnabled(true);
         }
-    }
-    else {
+    }/* else if (mPlayingAlert) {
+        if (mEventTimeCtr >= mAlertTime) {
+            mAlertImg->setColor(video::SColor(0,255,255,255));
+            mEventTimeCtr = 0.0f;
+            mPlayingAlert = false;
+            //AddEventNotification(L"Seen By Enemy!");
+        }
+    }*/ else {
         if (mEventTimeCtr >= mEventTime) {
             mEventTimeCtr = 0.0f;
             mEventText->setOverrideColor(video::SColor(0,255,255,0)); // transparent
@@ -140,6 +160,13 @@ void GameHud::AddTriggerExplosion()
     //mRightBackImg->setColor(video::SColor(255,255,255,255));
     mExplosionImg->setColor(video::SColor(255,255,255,255));
 }
+
+/*void GameHud::AddSeenByEnemy()
+{
+    mEventTimeCtr = 0.0f;
+    mPlayingAlert = true;
+    mAlertImg->setColor(video::SColor(255,255,255,255));
+}*/
 
 // global instance
 GameHud gHud;

@@ -11,7 +11,9 @@ GameStatManager::GameStatManager() :
     mGameTimeScoreCtr(0.0f),
     mGameTimeDurationScore(10),
     mNumMkPlyrWtEvts(0),
-    mNumTauntPlyrEvts(0)
+    mNumTauntPlyrEvts(0),
+    mNumTrgrExplEvts(0),
+    mNumSeenByEnmyEvts(0)
 {}
 
 GameStatManager::~GameStatManager()
@@ -24,6 +26,8 @@ void GameStatManager::Reset()
     mGameTimeScoreCtr = 0.0f;
     mNumMkPlyrWtEvts = 0;
     mNumTauntPlyrEvts = 0;
+    mNumTrgrExplEvts = 0;
+    mNumSeenByEnmyEvts = 0;
 }
 
 void GameStatManager::UpdateGameTime(const float dt)
@@ -47,12 +51,22 @@ void GameStatManager::AddScoreEvent(GameStatManager::ScoreEvent evt)
     case EVT_MAKE_PLAYER_WAIT:
         ++mNumMkPlyrWtEvts;
         mScore += 50;
-        message = L"Make Player Wait!";
+        message = L"Make Player Wait! +50";
         break;
     case EVT_TAUNT_PLAYER:
         ++mNumTauntPlyrEvts;
         mScore += 15;
-        message = L"Taunt Player!";
+        message = L"Taunt Player! +15";
+    case EVT_TRIGGER_EXPLOSION:
+        ++mNumTrgrExplEvts;
+        mScore += 100;
+        message = L"Trigger Explosion! +100";
+        break;
+    case EVT_SEEN_BY_ENEMY:
+        ++mNumSeenByEnmyEvts;
+        mScore += 500;
+        message = L"Spotted By Enemy! +500";
+        break;
     default:
         break;
     }
