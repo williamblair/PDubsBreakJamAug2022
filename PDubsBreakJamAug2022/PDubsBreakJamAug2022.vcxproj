@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AIEnemy.cpp" />
     <ClCompile Include="AIPlayer.cpp" />
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="EndGameScreen.cpp" />
@@ -162,6 +163,7 @@
     <ClCompile Include="TitleScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AIEnemy.h" />
     <ClInclude Include="AIPlayer.h" />
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="EndGameScreen.h" />

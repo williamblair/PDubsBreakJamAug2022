@@ -1,13 +1,17 @@
 #include "AIPlayer.h"
 #include "GameStatManager.h"
+#include "GameMap.h"
 
 using namespace irr;
 
 AIPlayer::AIPlayer() :
     mNode(nullptr),
     mState(State::WALK_TOWARDS_WAYPOINT),
-    mIdleTime(5.0f),
-    mIdleCtr(0.0f)
+    mEnemy(nullptr),
+    mIdleTime(3.0f),
+    mIdleCtr(0.0f),
+    mAttackEnemyTime(3.0f),
+    mAttackEnemyCtr(0.0f)
 {}
 
 AIPlayer::~AIPlayer()
@@ -26,11 +30,6 @@ void AIPlayer::Init()
     mNode->setMaterialFlag(video::EMF_LIGHTING, false);
 
     mNpcPos = core::vector3df(0.0f,0.0f,0.0f);
-
-    /*AddWaypoint(core::vector3df(-100,-66,-80));
-    AddWaypoint(core::vector3df(100,-66,-80));
-    AddWaypoint(core::vector3df(100,-66,80));
-    AddWaypoint(core::vector3df(-100,-66,80));*/
 }
 
 void AIPlayer::Update(const float dt)
@@ -40,6 +39,8 @@ void AIPlayer::Update(const float dt)
     case State::WALK_TOWARDS_WAYPOINT: WalkTowardsWaypoint(dt); break;
     case State::IDLE: RunIdle(dt); break;
     case State::WAIT_FOR_PLAYER: WaitForPlayer(dt); break;
+    case State::WALK_TOWARD_ENEMY: WalkTowardsEnemy(dt); break;
+    case State::ATTACK_ENEMY: AttackEnemy(dt); break;
     default:
         break;
     }
@@ -68,7 +69,7 @@ void AIPlayer::WalkTowardsWaypoint(const float dt)
     mNode->setRotation(core::vector3df(0,core::radToDeg(rot),0));
 
     // walk forward
-    float walkSpeed = 50.0f;
+    float walkSpeed = 70.0f;
     aiToPoint.normalize();
     mNode->setPosition(mNode->getPosition() + aiToPoint*dt*walkSpeed);
 }
@@ -115,6 +116,74 @@ void AIPlayer::WaitForPlayer(const float dt)
             TriggerMakePlayerWait();
             mIdleCtr = 0.0f;
         }
+    }
+}
+
+void AIPlayer::WalkTowardsEnemy(const float dt)
+{
+    if (mEnemy == nullptr) {
+        mEnemy = gMap.GetNextEnemy();
+        if (mEnemy == nullptr) {
+            mState = State::WAIT_FOR_PLAYER;
+            return;
+        }
+        mAttackEnemyCtr = 0.0f;
+    }
+
+    // Get vector from our position to waypoint
+    core::vector3df enPos = mEnemy->GetNode()->getAbsolutePosition();
+    enPos.Y -= 50.0f;
+    core::vector3df aiToPoint = enPos - mNode->getPosition();
+
+    // Test if we are close enough to the waypoint to stop
+    if (aiToPoint.getLengthSQ() < 800.0f) {
+        //mWaypoints.erase(mWaypoints.begin());
+        mState = State::ATTACK_ENEMY;
+        mNode->setFrameLoop(31,43); // specific to ninja model
+        return;
+    }
+    
+    float rot = atan2f(aiToPoint.X, aiToPoint.Z);
+    mNode->setRotation(core::vector3df(0,core::radToDeg(rot),0));
+
+    // walk forward
+    float walkSpeed = 70.0f;
+    aiToPoint.normalize();
+    mNode->setPosition(mNode->getPosition() + aiToPoint*dt*walkSpeed);
+}
+
+void AIPlayer::AttackEnemy(const float dt)
+{
+    if (mEnemy == nullptr) {
+        mEnemy = gMap.GetNextEnemy();
+        if (mEnemy == nullptr) {
+            mState = State::WAIT_FOR_PLAYER;
+            return;
+        }
+         mNode->setFrameLoop(31,43); // specific to ninja model
+    }
+
+    // Get vector from our position to waypoint
+    core::vector3df enPos = mEnemy->GetNode()->getAbsolutePosition();
+    enPos.Y -= 50.0f;
+    core::vector3df aiToPoint = enPos - mNode->getPosition();
+
+    float rot = atan2f(aiToPoint.X, aiToPoint.Z);
+    mNode->setRotation(core::vector3df(0,core::radToDeg(rot),0));
+
+    // Test if we are close enough to the waypoint to stop
+    if (aiToPoint.getLengthSQ() >= 6000.0f) {
+        mState = State::WALK_TOWARD_ENEMY;
+        mNode->setFrameLoop(0,13); // specific to ninja model
+        return;
+    }
+
+    mAttackEnemyCtr += dt;
+    if (mAttackEnemyCtr >= mAttackEnemyTime) {
+        gMap.DestroyEnemy(mEnemy);
+        mEnemy = nullptr;
+        mState = State::ATTACK_ENEMY;
+        mNode->setFrameLoop(0,13);
     }
 }
 

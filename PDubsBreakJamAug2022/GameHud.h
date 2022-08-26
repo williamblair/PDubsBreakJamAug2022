@@ -15,6 +15,7 @@ public:
     void AddEventNotification(irr::core::stringw message);
 
     void AddTriggerExplosion();
+    //void AddSeenByEnemy();
 private:
     irr::gui::IGUIFont* mFont;
     irr::gui::IGUIStaticText* mTimeText;
@@ -22,8 +23,10 @@ private:
     irr::gui::IGUIStaticText* mEventText;
     irr::video::ITexture* mRightBackTex;
     irr::video::ITexture* mExplosionTex;
+    //irr::video::ITexture* mAlertTex;
     irr::gui::IGUIImage* mRightBackImg;
     irr::gui::IGUIImage* mExplosionImg;
+    //irr::gui::IGUIImage* mAlertImg;
 
     // how long event notification popup should last
     float mEventTimeCtr;
@@ -34,6 +37,10 @@ private:
     // we'll be right back sound effect
     size_t mRightBackSound;
     bool mPlayingExplosion;
+
+    // how long alert popup should last
+    //float mAlertTime;
+    //bool mPlayingAlert;
 };
 
 // global GameHud instance

@@ -32,7 +32,7 @@ public:
     irr::core::aabbox3df GetCameraCollisionBox() {
         irr::core::vector3df pos = mCamera->getAbsolutePosition();
         irr::core::vector3df plyrMin(pos.X-50.0f, 0.0f, pos.Z-50.0f);
-        irr::core::vector3df plyrMax(pos.X+50.0f, 0.0f, pos.Z+50.0f);
+        irr::core::vector3df plyrMax(pos.X+50.0f, 50.0f, pos.Z+50.0f);
         return irr::core::aabbox3df(plyrMin, plyrMax);
     }
 
