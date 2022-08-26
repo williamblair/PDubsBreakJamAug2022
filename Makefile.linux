@@ -5,7 +5,7 @@ OBJS = $(SOURCES:.cpp=.o)
 TARGET = main
 INCDIRS = -I./PDubsBreakJamAug2022
 LIBDIRS =
-LIBS = -lIrrlicht -lGL -lXxf86vm -lXext -lX11 -lXcursor
+LIBS = -lIrrlicht -lGL -lXxf86vm -lXext -lX11 -lXcursor -lSDL2 -lSDL2_mixer
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) -c -o $@ $< $(INCDIRS)

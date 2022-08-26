@@ -23,7 +23,7 @@ Renderer::~Renderer()
 
 void Renderer::Init()
 {
-    mDevice = createDevice(video::EDT_OPENGL, dimension2d<u32>(640,480), 32, false, false, false, &gInputMgr);
+    mDevice = createDevice(video::EDT_OPENGL, dimension2d<u32>(800,600), 32, false, false, false, &gInputMgr);
     if (!mDevice) {
         throw std::runtime_error("Failed to create irrlicht device");
     }
