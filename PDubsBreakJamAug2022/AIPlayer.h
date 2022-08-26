@@ -26,7 +26,12 @@ public:
     void Init();
     void SetNpcPos(irr::core::vector3df pos) { mNpcPos = pos; }
     void SetState(State state) { mState = state; }
-    void AddWaypoint(irr::core::vector3df pos) { mWaypoints.push_back(pos); }
+    void AddWaypoint(irr::core::vector3df pos) {
+        mWaypoints.push_back(pos);
+        if (mNode) {
+            mNode->setPosition(*mWaypoints.begin());
+        }
+    }
     void Update(const float dt);
 
 private:

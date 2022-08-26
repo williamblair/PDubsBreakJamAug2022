@@ -27,6 +27,7 @@ private:
     size_t mBgMusic;
     size_t mHilightSound;
     size_t mSelectSound;
+    float mNamePos;
     
     bool mRunning;
 
