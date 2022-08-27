@@ -27,7 +27,7 @@ void Renderer::Init()
     if (!mDevice) {
         throw std::runtime_error("Failed to create irrlicht device");
     }
-    mDevice->setWindowCaption(L"Hello World - Irrlicht Engine Demo");
+    mDevice->setWindowCaption(L"NPC Escort Simulator");
     mDriver = mDevice->getVideoDriver();
     mSmgr = mDevice->getSceneManager();
     mGuienv = mDevice->getGUIEnvironment();

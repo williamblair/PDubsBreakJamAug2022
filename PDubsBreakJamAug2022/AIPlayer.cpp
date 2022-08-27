@@ -12,7 +12,7 @@ AIPlayer::AIPlayer() :
     mNode(nullptr),
     mState(State::WALK_TOWARDS_WAYPOINT),
     mEnemy(nullptr),
-    mIdleTime(3.0f),
+    mIdleTime(2.4f),
     mIdleCtr(0.0f),
     mAttackEnemyTime(3.0f),
     mAttackEnemyCtr(0.0f)
@@ -38,7 +38,7 @@ void AIPlayer::Init()
     mNpcPos = core::vector3df(0.0f,0.0f,0.0f);
 
     mHitSound = gAudioMgr.LoadSound("assets/punchhitkick.mp3");
-    mGruntSound = gAudioMgr.LoadSound("assets/uhoh.mp3");
+    mGruntSound = gAudioMgr.LoadSound("assets/comeon.mp3");
 }
 
 void AIPlayer::Update(const float dt)
@@ -78,7 +78,7 @@ void AIPlayer::WalkTowardsWaypoint(const float dt)
     mNode->setRotation(core::vector3df(0,core::radToDeg(rot),0));
 
     // walk forward
-    float walkSpeed = 70.0f;
+    float walkSpeed = 85.0f;
     aiToPoint.normalize();
     mNode->setPosition(mNode->getPosition() + aiToPoint*dt*walkSpeed);
 }
@@ -86,12 +86,17 @@ void AIPlayer::WalkTowardsWaypoint(const float dt)
 void AIPlayer::RunIdle(const float dt)
 {
     mIdleCtr += dt;
+
+    // get vector from AI to actual player
+    core::vector3df aiToPlayer = mNpcPos - mNode->getPosition();
+
+    // rotate to face player
+    float rot = atan2f(aiToPlayer.X, aiToPlayer.Z);
+    mNode->setRotation(core::vector3df(0,core::radToDeg(rot),0));
+
     if (mIdleCtr >= mIdleTime) {
 
         mIdleCtr = 0.0f;
-
-        // get vector from AI to actual player
-        core::vector3df aiToPlayer = mNpcPos - mNode->getPosition();
 
         // if not close enough, we need to wait for them to get close enough
         if (aiToPlayer.getLengthSQ() > 20000.0f) {
@@ -162,7 +167,7 @@ void AIPlayer::WalkTowardsEnemy(const float dt)
     mNode->setRotation(core::vector3df(0,core::radToDeg(rot),0));
 
     // walk forward
-    float walkSpeed = 70.0f;
+    float walkSpeed = 85.0f;
     aiToPoint.normalize();
     mNode->setPosition(mNode->getPosition() + aiToPoint*dt*walkSpeed);
 }

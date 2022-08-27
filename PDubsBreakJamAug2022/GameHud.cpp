@@ -37,8 +37,8 @@ void GameHud::Init()
     mScoreText->setOverrideColor(fntCol);
     mScoreText->setOverrideFont(mFont);
 
-    x = 300; y = 10;
-    x2 = 400; y2 = 40;
+    x = 250; y = 10;
+    x2 = 500; y2 = 60;
     mEventText = gRender.GetGuiEnv()->addStaticText(
         L"Some Event!",
         core::rect<s32>(x,y,x2,y2), // pos
@@ -78,20 +78,6 @@ void GameHud::Init()
     mExplosionImg->setImage(mExplosionTex);
     mExplosionImg->setScaleImage(true);
     mExplosionImg->setColor(video::SColor(0,255,255,255)); // fully transparent
-
-    /*mPlayingAlert = false;
-    mAlertTime = 2.0f;
-    mAlertTex = gRender.LoadTexture("assets/alert.png");
-    mAlertImg = gRender.GetGuiEnv()->addImage(
-        core::rect<s32>(320-50,240-50,320+100,240+100),
-        nullptr,
-        -1,
-        nullptr,
-        true
-    );
-    mAlertImg->setImage(mAlertTex);
-    mAlertImg->setColor(video::SColor(0,255,255,255));
-    mAlertImg->setScaleImage(true);*/
 }
 
 void GameHud::Update(const float dt)

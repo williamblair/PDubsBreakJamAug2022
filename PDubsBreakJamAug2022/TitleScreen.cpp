@@ -67,6 +67,8 @@ TitleScreen::Action TitleScreen::Run(bool startMusic)
         x = (s32)mNamePos; x2 = x + 300;
         y = 500; y2 = 500;
         mFont->draw(L"BJ Blair - PDubs Break Jam Aug 2022",core::rect<s32>(x,y,x2,y2),fntCol);
+        mFont->draw(L"W/S - Select", core::rect<s32>(50,550,300,550),fntCol);
+        mFont->draw(L"Enter - Confirm", core::rect<s32>(450,550,800,550),fntCol);
         gRender.Update(false);
     }
     if (mAction != Action::ACTION_HIGHSCORES) {

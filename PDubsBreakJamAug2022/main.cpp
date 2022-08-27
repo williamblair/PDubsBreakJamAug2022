@@ -56,9 +56,8 @@ static bool RunEndGameScreen()
     }
     return true;
 }
-static HighScoreScreen::Action RunHighScoreScreen()
+static void LoadHighScores()
 {
-    HighScoreScreen hss;
     FILE* datFile = fopen("assets/highscores.dat", "rb");
     if (datFile) {
         // get file size
@@ -77,6 +76,11 @@ static HighScoreScreen::Action RunHighScoreScreen()
         }
         fclose(datFile);
     }
+}
+static HighScoreScreen::Action RunHighScoreScreen()
+{
+    HighScoreScreen hss;
+    LoadHighScores();
     hss.Init();
     return hss.Run();
 }
@@ -97,6 +101,7 @@ int main()
     gAIPlayer.Init();
     gHud.Init();
     
+    LoadHighScores();
 
     trainSound = gAudioMgr.LoadSound("assets/train.mp3");
     alertSound = gAudioMgr.LoadSound("assets/alert.mp3");
